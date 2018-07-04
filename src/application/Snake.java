@@ -45,9 +45,10 @@ public class Snake {
 		 snakeBody.add(usedGameBoard.getCell(2, 0));
 		 snakeBody.add(usedGameBoard.getCell(3, 0));
 		 snakeBody.add(usedGameBoard.getCell(headPositionX, headPositionY)); // <-- head
-		 for(Cell c: snakeBody) {
-			 c.setState(CellState.UNDERSNAKE);
+		 for (int a=0;a<snakeBody.size()-1;a++) {
+			 snakeBody.get(a).setState(CellState.UNDERTAILE);
 		 }
+		 snakeBody.getLast().setState(CellState.UNDERHEAD);
 		 this.dir=Direction.DOWN;
 	 }
 	 void setDirection(Direction d) {
@@ -71,6 +72,7 @@ public class Snake {
 				snakeBody.add(usedGameBoard.getCell(headPositionX, headPositionY++));
 				break;
 		 }
+		snakeBody.get(snakeBody.indexOf(snakeBody.getLast())-1).setState(CellState.UNDERTAILE);;
 		snakeBody.getLast().setState(CellState.UNDERHEAD);
 	 }
 
