@@ -1,6 +1,10 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 import javafx.scene.paint.Color;
 
@@ -12,6 +16,7 @@ public class Snake {
 		private Direction dir;
 		private int headPositionX;	
 		private int headPositionY;
+		private HashMap<Direction, List<Direction>> validCommands;
 		
 	public Snake(Color snakeColor, GameBoard b) {
 		length=5;
@@ -19,6 +24,11 @@ public class Snake {
 		snakeBody= new LinkedList<Cell>();
 		usedGameBoard=b;
 		initSnakePosition();
+		validCommands= new HashMap<Direction, List<Direction>>();
+		validCommands.put(Direction.UP, Arrays.asList(Direction.RIGHT,Direction.LEFT));
+		validCommands.put(Direction.DOWN, Arrays.asList(Direction.RIGHT,Direction.LEFT));
+		validCommands.put(Direction.RIGHT, Arrays.asList(Direction.UP,Direction.DOWN));
+		validCommands.put(Direction.LEFT, Arrays.asList(Direction.UP,Direction.DOWN));
 	}
 	 Color getColor() {
 		return snakeColor;
@@ -38,29 +48,30 @@ public class Snake {
 		 for(Cell c: snakeBody) {
 			 c.setState(CellState.UNDERSNAKE);
 		 }
-		 setDirection(Direction.DOWN);
+		 this.dir=Direction.DOWN;
 	 }
 	 void setDirection(Direction d) {
-		 dir=d;
+		 if(validCommands.get(dir).contains(d))
+			 dir=d;
 	 }
 	 void moveSnake() {
 		snakeBody.getFirst().setState(CellState.FREE);
 		snakeBody.removeFirst();
 		switch(dir) {
-		case DOWN:
-			snakeBody.add(usedGameBoard.getCell(headPositionX++, headPositionY));
-			break;
-		case UP:
-			snakeBody.add(usedGameBoard.getCell(headPositionX--, headPositionY));
-			break;
-		case LEFT:
-			snakeBody.add(usedGameBoard.getCell(headPositionX, headPositionY--));
-			break;
-		case RIGHT:
-			snakeBody.add(usedGameBoard.getCell(headPositionX, headPositionY++));
-			break;
+			case DOWN:
+				snakeBody.add(usedGameBoard.getCell(headPositionX++, headPositionY));
+				break;
+			case UP:
+				snakeBody.add(usedGameBoard.getCell(headPositionX--, headPositionY));
+				break;
+			case LEFT:
+				snakeBody.add(usedGameBoard.getCell(headPositionX, headPositionY--));
+				break;
+			case RIGHT:
+				snakeBody.add(usedGameBoard.getCell(headPositionX, headPositionY++));
+				break;
 		 }
-		snakeBody.getLast().setState(CellState.UNDERSNAKE);
+		snakeBody.getLast().setState(CellState.UNDERHEAD);
 	 }
 
 }

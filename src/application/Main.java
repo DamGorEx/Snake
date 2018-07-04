@@ -51,7 +51,6 @@ public class Main extends Application {
 			scene.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
 			    public void handle(KeyEvent ke) {
 			    	snake.setDirection(console.get(ke.getCode().toString()));
-			    	System.out.println(console.get(ke.getCode().toString()));
 			    }
 			});
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
